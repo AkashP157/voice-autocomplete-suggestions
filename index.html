@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Cache-busting headers for development -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    
+    <title>🎤 Voice Based Suggestions</title>
+    <link rel="stylesheet" href="styles.css?v=20250920-2">
+</head>
+<body>
+    <div class="container">
+    <header>
+        <h1>🎤 Voice Based Suggestions</h1>
+        <p>Click the microphone button and start speaking in English</p>
+    </header>        <main>
+            <div class="controls">
+                <button id="startBtn" class="control-btn start-btn">
+                    <span class="mic-icon">🎤</span>
+                    Start Recording
+                </button>
+                <button id="stopBtn" class="control-btn stop-btn" disabled>
+                    <span class="stop-icon">⏹️</span>
+                    Stop Recording
+                </button>
+                <button id="clearBtn" class="control-btn clear-btn">
+                    <span class="clear-icon">🗑️</span>
+                    Clear Text
+                </button>
+            </div>
+
+            <div class="settings-panel">
+                <div class="setting-item">
+                    <label for="pauseDelaySlider">Suggestion Delay:</label>
+                    <input type="range" id="pauseDelaySlider" min="500" max="3000" value="1000" step="100">
+                    <span id="pauseDelayValue">1.0s</span>
+                </div>
+            </div>
+
+            <div class="status">
+                <span id="statusText">Ready to start transcription</span>
+                <div id="statusIndicator" class="status-indicator"></div>
+            </div>
+
+            <div class="live-preview-container">
+                <h3>🎙️ Live Speech Preview:</h3>
+                <div id="livePreview" class="live-preview">
+                    <p class="placeholder">Start speaking and your words will appear here in real-time...</p>
+                </div>
+            </div>
+        </main>
+
+        <!-- LLM Configuration Panel -->
+        <div id="llmConfigPanel" class="config-panel">
+            <div class="config-header">
+                <h3>⚙️ LLM Configuration</h3>
+                <button id="closeConfigBtn" class="close-btn">×</button>
+            </div>
+            <div class="config-content">
+                <div class="config-field">
+                    <label for="llmEndpoint">API Endpoint:</label>
+                    <input type="url" id="llmEndpoint" placeholder="https://your-service.openai.azure.com/" />
+                </div>
+                <div class="config-field">
+                    <label for="llmApiKey">API Key:</label>
+                    <input type="password" id="llmApiKey" placeholder="Your API key" />
+                </div>
+                <div class="config-field">
+                    <label for="llmModel">Model Name:</label>
+                    <input type="text" id="llmModel" placeholder="gpt-4o-mini" />
+                </div>
+                <div class="config-field">
+                    <label for="llmDeployment">Deployment Name:</label>
+                    <input type="text" id="llmDeployment" placeholder="your-deployment-name" />
+                </div>
+                <div class="config-actions">
+                    <button id="testConnectionBtn" class="btn-test">🔌 Test Connection</button>
+                    <button id="saveLLMConfigBtn" class="btn-save">💾 Save Configuration</button>
+                </div>
+                <div id="connectionStatus" class="connection-status"></div>
+            </div>
+        </div>
+
+        <!-- Settings Panel with LLM Config Button -->
+        <div class="settings-panel">
+            <div class="settings-row">
+                <button id="openLLMConfigBtn" class="btn-config">⚙️ Configure LLM</button>
+                <span id="llmStatus" class="llm-status">Not Configured</span>
+            </div>
+        </div>
+
+        <footer>
+            <div class="browser-support">
+                <p id="supportInfo">Checking browser support...</p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="script.js?v=20250920-2"></script>
+</body>
+</html>
