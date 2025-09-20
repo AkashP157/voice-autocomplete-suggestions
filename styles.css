@@ -41,6 +41,27 @@ header p {
     color: #666;
 }
 
+.version-nav {
+    margin-top: 15px;
+}
+
+.mobile-link {
+    display: inline-block;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    text-decoration: none;
+    padding: 12px 24px;
+    border-radius: 25px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.mobile-link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
 main {
     flex: 1;
     background: rgba(255, 255, 255, 0.95);
@@ -196,15 +217,8 @@ main {
     margin-bottom: 25px;
 }
 
-.live-preview-container {
+.transcription-container, .interim-container {
     margin-bottom: 25px;
-}
-
-.live-preview-container h3 {
-    margin-bottom: 15px;
-    color: #4a5568;
-    font-size: 1.4rem;
-    text-align: center;
 }
 
 .transcription-output, .interim-results {
@@ -221,27 +235,142 @@ main {
     word-wrap: break-word;
 }
 
+.live-preview-container {
+    margin-bottom: 25px;
+}
+
+.live-preview-container h3 {
+    margin-bottom: 15px;
+    color: #4a5568;
+    font-size: 1.4rem;
+    text-align: center;
+}
+
+.speech-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: stretch;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
 .live-preview {
-    background: linear-gradient(135deg, #f0fff4 0%, #e6fffa 100%);
-    border: 3px solid #9ae6b4;
-    border-radius: 15px;
-    padding: 25px;
-    min-height: 150px;
+    background: #2d2d2d;
+    border: 1px solid #404040;
+    border-right: none;
+    border-radius: 0;
+    padding: 16px 20px;
+    min-height: 120px;
     max-height: 400px;
     overflow-y: auto;
-    font-size: 1.2rem;
-    line-height: 1.7;
+    font-size: 1rem;
+    line-height: 1.5;
     white-space: pre-wrap;
     word-wrap: break-word;
-    text-align: center;
-    box-shadow: 0 4px 20px rgba(154, 230, 180, 0.2);
+    text-align: left;
+    color: #ffffff;
     transition: all 0.3s ease;
+    flex: 1;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.search-btn {
+    background: #2d2d2d;
+    border: 1px solid #404040;
+    border-left: none;
+    border-radius: 0;
+    padding: 16px 20px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 60px;
+    color: #ffffff;
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+
+.search-btn:hover {
+    background: #3a3a3a;
+    color: #ffffff;
+}
+
+.search-btn:active {
+    background: #1a1a1a;
+}
+
+.search-icon {
+    display: block;
+    line-height: 1;
+    opacity: 0.8;
+}
+
+.search-btn:hover .search-icon {
+    opacity: 1;
 }
 
 .live-preview.speaking {
+    border-color: #555555;
+    background: #333333;
+}
+
+.speech-input-wrapper:has(.live-preview.speaking) .search-btn {
+    border-color: #555555;
+    background: #333333;
+}
+
+.placeholder {
+    color: #888888;
+    font-style: italic;
+}
+
+/* Fallback for browsers that don't support :has() */
+.live-preview.speaking + .search-btn {
     border-color: #48bb78;
     box-shadow: 0 4px 25px rgba(72, 187, 120, 0.4);
-    transform: scale(1.02);
+}
+
+/* Focus states for accessibility */
+.live-preview:focus {
+    outline: 2px solid #007acc;
+    outline-offset: 2px;
+    border-color: #555555;
+}
+
+.search-btn:focus {
+    outline: 2px solid #007acc;
+    outline-offset: 2px;
+    border-color: #555555;
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 768px) {
+    .speech-input-wrapper {
+        flex-direction: column;
+        border-radius: 8px;
+    }
+    
+    .live-preview {
+        border-right: 1px solid #404040;
+        border-bottom: none;
+        padding: 12px 16px;
+        min-height: 100px;
+    }
+    
+    .search-btn {
+        border-left: 1px solid #404040;
+        border-top: none;
+        min-height: 44px;
+        min-width: auto;
+        padding: 12px;
+    }
+    
+    .speech-input-wrapper:has(.live-preview.speaking) .search-btn,
+    .live-preview.speaking + .search-btn {
+        border-color: #555555;
+    }
 }
 
 .interim-results {

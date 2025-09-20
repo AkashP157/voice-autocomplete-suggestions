@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Cache-busting headers for development -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    
+    <title>🎤 Voice Suggestions - Mobile</title>
+    <link rel="stylesheet" href="mobile.css?v=20250920-3">
+</head>
+<body>
+    <div class="mobile-container">
+        <!-- Settings Button with LLM Status -->
+        <button id="settingsBtn" class="settings-btn" title="Settings (LLM Status)">
+            <span class="settings-icon">⚙️</span>
+        </button>
+
+        <!-- Close Button -->
+        <button id="closeBtn" class="close-btn" title="Back to Desktop">
+            <span class="close-icon">✕</span>
+        </button>
+
+        <!-- Main Content Area -->
+        <div class="content-area">
+            <!-- Live Text Display -->
+            <div class="text-display" id="liveText">
+                <p class="placeholder">Tap the microphone to start speaking...</p>
+            </div>
+
+            <!-- Suggestion Pills -->
+            <div class="suggestions-container" id="suggestionsContainer">
+                <div class="suggestion-pill" id="suggestion1">
+                    <span>Suggestion 1</span>
+                </div>
+                <div class="suggestion-pill" id="suggestion2">
+                    <span>Suggestion 2</span>
+                </div>
+                <div class="suggestion-pill" id="suggestion3">
+                    <span>Suggestion 3</span>
+                </div>
+            </div>
+
+            <!-- Button Controls -->
+            <div class="button-controls">
+                <button id="clearBtn" class="control-btn clear-btn">
+                    <span class="btn-text">Clear</span>
+                </button>
+                <button id="recordBtn" class="control-btn record-btn">
+                    <span class="record-icon" id="recordIcon">🎤</span>
+                </button>
+                <button id="searchBtn" class="control-btn search-btn">
+                    <span class="search-icon">→</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- LLM Configuration Modal -->
+    <div id="mobileConfigPanel" class="mobile-config-panel">
+        <div class="mobile-config-content">
+            <div class="mobile-config-header">
+                <h3>⚙️ LLM Configuration</h3>
+                <button id="closeMobileConfigBtn" class="mobile-close-btn">×</button>
+            </div>
+            <div class="mobile-config-fields">
+                <div class="mobile-config-field">
+                    <label for="mobileEndpoint">API Endpoint:</label>
+                    <input type="url" id="mobileEndpoint" placeholder="https://your-service.openai.azure.com/" />
+                </div>
+                <div class="mobile-config-field">
+                    <label for="mobileApiKey">API Key:</label>
+                    <input type="password" id="mobileApiKey" placeholder="Your API key" />
+                </div>
+                <div class="mobile-config-field">
+                    <label for="mobileModel">Model Name:</label>
+                    <input type="text" id="mobileModel" placeholder="gpt-4o-mini" />
+                </div>
+                <div class="mobile-config-field">
+                    <label for="mobileDeployment">Deployment Name:</label>
+                    <input type="text" id="mobileDeployment" placeholder="your-deployment-name" />
+                </div>
+                <div class="mobile-config-actions">
+                    <button id="mobileTestBtn" class="mobile-btn-test">🔌 Test Connection</button>
+                    <button id="mobileSaveBtn" class="mobile-btn-save">💾 Save Configuration</button>
+                </div>
+                <div id="mobileConnectionStatus" class="mobile-connection-status"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="mobile.js?v=20250920-3"></script>
+</body>
+</html>

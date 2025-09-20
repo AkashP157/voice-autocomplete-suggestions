@@ -48,6 +48,7 @@ class SpeechTranscriber {
         this.statusText = document.getElementById('statusText');
         this.statusIndicator = document.getElementById('statusIndicator');
         this.livePreview = document.getElementById('livePreview');
+        this.searchBtn = document.getElementById('searchBtn');
         this.supportInfo = document.getElementById('supportInfo');
         this.suggestionsContainer = null; // Will be created dynamically
         
@@ -89,6 +90,22 @@ class SpeechTranscriber {
         this.startBtn.addEventListener('click', () => this.startRecording());
         this.stopBtn.addEventListener('click', () => this.stopRecording());
         this.clearBtn.addEventListener('click', () => this.clearTranscription());
+        
+        // Search functionality
+        if (this.searchBtn) {
+            this.searchBtn.addEventListener('click', () => this.performSearch());
+        }
+        
+        // Keyboard support for search
+        this.livePreview.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                this.performSearch();
+            }
+        });
+        
+        // Make live preview focusable for keyboard events
+        this.livePreview.setAttribute('tabindex', '0');
         
         // LLM Configuration event listeners
         if (this.openLLMConfigBtn) {
@@ -335,6 +352,52 @@ class SpeechTranscriber {
         // Clear cache when manually clearing
         this.suggestionCache.clear();
         this.activePrefetchCalls.clear();
+    }
+    
+    performSearch() {
+        // Get the current text from the live preview
+        const searchText = this.extractTextFromPreview();
+        
+        if (!searchText || searchText.trim().length === 0) {
+            this.statusText.textContent = '⚠️ No text to search for. Please speak something first.';
+            return;
+        }
+        
+        // Clear suggestions when performing search
+        this.hideSuggestions();
+        this.lastValidSuggestions = null;
+        this.lastSuggestionContext = '';
+        
+        // Open Bing search in new tab
+        const searchQuery = encodeURIComponent(searchText.trim());
+        const bingUrl = `https://www.bing.com/search?q=${searchQuery}`;
+        
+        // Update status
+        this.statusText.textContent = `🔍 Searching for: "${searchText.trim()}"`;
+        
+        // Open in new tab
+        window.open(bingUrl, '_blank');
+        
+        console.log(`Search executed: "${searchText.trim()}" -> ${bingUrl}`);
+    }
+    
+    extractTextFromPreview() {
+        // Get text content, excluding the placeholder
+        const previewElement = this.livePreview;
+        const placeholder = previewElement.querySelector('.placeholder');
+        
+        if (placeholder && placeholder.style.display !== 'none' && !placeholder.hidden) {
+            return ''; // Placeholder is visible, no real text
+        }
+        
+        // Clone the element to avoid modifying the original
+        const clone = previewElement.cloneNode(true);
+        const placeholderInClone = clone.querySelector('.placeholder');
+        if (placeholderInClone) {
+            placeholderInClone.remove();
+        }
+        
+        return clone.textContent || clone.innerText || '';
     }
     
     showError(message) {

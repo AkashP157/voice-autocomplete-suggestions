@@ -17,6 +17,11 @@
     <header>
         <h1>🎤 Voice Based Suggestions</h1>
         <p>Click the microphone button and start speaking in English</p>
+        <div class="version-nav">
+            <a href="mobile.html" class="mobile-link">
+                📱 Try Mobile Version (v2)
+            </a>
+        </div>
     </header>        <main>
             <div class="controls">
                 <button id="startBtn" class="control-btn start-btn">
@@ -48,8 +53,13 @@
 
             <div class="live-preview-container">
                 <h3>🎙️ Live Speech Preview:</h3>
-                <div id="livePreview" class="live-preview">
-                    <p class="placeholder">Start speaking and your words will appear here in real-time...</p>
+                <div class="speech-input-wrapper">
+                    <div id="livePreview" class="live-preview">
+                        <p class="placeholder">Start speaking and your words will appear here in real-time...</p>
+                    </div>
+                    <button id="searchBtn" class="search-btn" title="Search on Bing">
+                        <span class="search-icon">→</span>
+                    </button>
                 </div>
             </div>
         </main>
