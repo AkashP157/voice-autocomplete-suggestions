@@ -368,17 +368,17 @@ class SpeechTranscriber {
         this.lastValidSuggestions = null;
         this.lastSuggestionContext = '';
         
-        // Open Bing search in new tab
+        // Open Bing Copilot search for AI answers in new tab
         const searchQuery = encodeURIComponent(searchText.trim());
-        const bingUrl = `https://www.bing.com/search?q=${searchQuery}`;
+        const bingCopilotUrl = `https://www.bing.com/copilotsearch?q=${searchQuery}&FORM=CSSCOP`;
         
         // Update status
-        this.statusText.textContent = `🔍 Searching for: "${searchText.trim()}"`;
+        this.statusText.textContent = `🤖 AI Search for: "${searchText.trim()}"`;
         
         // Open in new tab
-        window.open(bingUrl, '_blank');
+        window.open(bingCopilotUrl, '_blank');
         
-        console.log(`Search executed: "${searchText.trim()}" -> ${bingUrl}`);
+        console.log(`AI Search executed: "${searchText.trim()}" -> ${bingCopilotUrl}`);
     }
     
     extractTextFromPreview() {

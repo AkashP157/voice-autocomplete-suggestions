@@ -196,11 +196,11 @@ class MobileSpeechTranscriber {
         this.isListening = isRecording;
         
         if (isRecording) {
-            this.recordBtn.classList.add('recording');
+            this.recordBtn.classList.add('recording', 'listening');
             this.recordIcon.textContent = '⏹️'; // Stop icon
             this.liveText.classList.add('recording');
         } else {
-            this.recordBtn.classList.remove('recording');
+            this.recordBtn.classList.remove('recording', 'listening');
             this.recordIcon.textContent = '🎤'; // Microphone icon
             this.liveText.classList.remove('recording');
         }
@@ -256,14 +256,14 @@ class MobileSpeechTranscriber {
         this.lastValidSuggestions = null;
         this.lastSuggestionContext = '';
         
-        // Open Bing search in new tab
+        // Open Bing Copilot search for AI answers in new tab
         const searchQuery = encodeURIComponent(searchText.trim());
-        const bingUrl = `https://www.bing.com/search?q=${searchQuery}`;
+        const bingCopilotUrl = `https://www.bing.com/copilotsearch?q=${searchQuery}&FORM=CSSCOP`;
         
-        console.log(`🔍 Searching for: "${searchText.trim()}" -> ${bingUrl}`);
+        console.log(`🤖 AI Search for: "${searchText.trim()}" -> ${bingCopilotUrl}`);
         
         // Open in new tab
-        window.open(bingUrl, '_blank');
+        window.open(bingCopilotUrl, '_blank');
         
         // Clear the text after search (optional - you can remove this if you want to keep text)
         this.persistentTranscript = '';
@@ -301,9 +301,21 @@ class MobileSpeechTranscriber {
     
     hideSuggestions() {
         const pills = this.suggestionsContainer.querySelectorAll('.suggestion-pill');
-        pills.forEach(pill => {
-            pill.classList.remove('visible');
-            pill.querySelector('span').textContent = pill.id.replace('suggestion', 'Suggestion ');
+        pills.forEach((pill, index) => {
+            setTimeout(() => {
+                pill.classList.remove('visible', 'thinking');
+                pill.querySelector('span').textContent = pill.id.replace('suggestion', 'Suggestion ');
+            }, index * 50); // Staggered hiding
+        });
+    }
+    
+    showThinkingAnimation() {
+        const pills = this.suggestionsContainer.querySelectorAll('.suggestion-pill');
+        pills.forEach((pill, index) => {
+            setTimeout(() => {
+                pill.classList.remove('visible');
+                pill.classList.add('thinking');
+            }, index * 100); // Staggered thinking animation
         });
     }
     
@@ -350,10 +362,51 @@ class MobileSpeechTranscriber {
     
     updateTextDisplay(text) {
         if (text.trim()) {
-            this.liveText.innerHTML = `<p>${text}</p>`;
+            // Apply keyword highlighting using a safer approach
+            this.liveText.innerHTML = `<p>${this.highlightKeywords(text)}</p>`;
         } else {
             this.liveText.innerHTML = '<p class="placeholder">Tap the microphone to start speaking...</p>';
         }
+    }
+    
+    highlightKeywords(text) {
+        // Clean the text first - remove any existing HTML markup
+        const cleanText = text.replace(/<[^>]*>/g, '');
+        
+        // Escape HTML characters
+        let escapedText = cleanText
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#x27;');
+        
+        // Define keyword patterns
+        const patterns = [
+            // Numbers, dates, times, money (coral highlighting)
+            {
+                regex: /\b(\d+(?:\.\d+)?(?:\s*(?:dollars?|euros?|pounds?|₹|rs|rupees?))?|\$\d+(?:\.\d+)?|(?:january|february|march|april|may|june|july|august|september|october|november|december)\s+\d+|\d+[\/\-]\d+[\/\-]\d+|\d+:\d+(?:\s*(?:am|pm))?)\b/gi,
+                className: 'keyword-number'
+            }
+        ];
+        
+        // Apply number/date highlights first
+        patterns.forEach(pattern => {
+            escapedText = escapedText.replace(pattern.regex, `<span class="${pattern.className}">$&</span>`);
+        });
+        
+        // Apply proper noun highlighting (avoiding common false positives)
+        const commonWords = /^(I|The|A|An|This|That|These|Those|My|Your|His|Her|Its|Our|Their|Some|Any|All|Each|Every|Many|Much|Few|Little|More|Most|Less|Least|First|Last|Next|Previous|Same|Different|Other|Another)$/i;
+        
+        escapedText = escapedText.replace(/\b[A-Z][a-z]{2,}\b/g, (match) => {
+            // Skip if it's already highlighted or is a common word
+            if (match.includes('<span') || commonWords.test(match)) {
+                return match;
+            }
+            return `<span class="keyword-important">${match}</span>`;
+        });
+        
+        return escapedText;
     }
     
     updateLLMStatus() {
@@ -421,6 +474,9 @@ class MobileSpeechTranscriber {
             }
         }
         
+        // Show thinking animation
+        this.showThinkingAnimation();
+        
         // Make API call
         try {
             this.isProcessingLLM = true;
@@ -431,12 +487,17 @@ class MobileSpeechTranscriber {
             if (suggestions && suggestions.length > 0) {
                 this.displaySuggestions(suggestions, 'fresh');
                 this.cacheSuggestions(text, suggestions);
+            } else {
+                // Hide thinking animation if no suggestions
+                this.hideSuggestions();
             }
         } catch (error) {
             console.error('❌ LLM API error:', error);
-            // Show persistent suggestions if available
+            // Show persistent suggestions if available, otherwise hide thinking
             if (this.lastValidSuggestions) {
                 this.displaySuggestions(this.lastValidSuggestions, 'fallback');
+            } else {
+                this.hideSuggestions();
             }
         } finally {
             this.isProcessingLLM = false;
@@ -500,9 +561,15 @@ class MobileSpeechTranscriber {
         this.lastValidSuggestions = suggestions;
         this.lastSuggestionContext = this.lastInterimText;
         
-        // Update suggestion pills
+        // Update suggestion pills with enhanced animation
         const pills = this.suggestionsContainer.querySelectorAll('.suggestion-pill');
         
+        // First, hide thinking animation
+        pills.forEach(pill => {
+            pill.classList.remove('thinking');
+        });
+        
+        // Then show suggestions with staggered reveal
         pills.forEach((pill, index) => {
             pill.classList.remove('visible');
             
@@ -513,7 +580,7 @@ class MobileSpeechTranscriber {
                 } else {
                     pill.querySelector('span').textContent = `Suggestion ${index + 1}`;
                 }
-            }, index * 100);
+            }, index * 120); // Slightly slower stagger for better effect
         });
     }
     
@@ -523,21 +590,20 @@ class MobileSpeechTranscriber {
             return null;
         }
         
-        const prompt = `The user is building a voice prompt and said: "${text}"
+        const prompt = `You are having a natural, helpful conversation with someone. They just told you: "${text}"
 
-Your job is to help them create a comprehensive, detailed prompt by suggesting what important details they should add next. Analyze what they've already mentioned and suggest 3 specific gaps or details that would make their prompt much better and more complete.
+Think like a helpful friend - what would you naturally ask next to continue this conversation in a flowing, logical way? 
 
-Focus on:
-- What key information is missing that would improve the quality of their request
-- Specific details that would help get better results (like budget, timeframe, preferences, constraints)
-- Avoid repeating what they already mentioned
-- Make suggestions actionable and scannable while speaking
+Consider:
+- What's the most immediate next thing you'd want to know?
+- What would make this feel like talking to a real person?
+- What single detail would be most helpful to understand next?
 
-Provide exactly 3 short suggestions (max 4-5 words each) that guide them to add valuable missing details. Format as brief questions or prompts.`;
+Provide 3 natural, conversational follow-up questions (4-5 words each) that flow logically from what they just said. Be direct and focused - no pleasantries or filler words, just the essential questions.`;
         
         const requestBody = {
             messages: [
-                { role: 'system', content: 'You are an expert at helping users build comprehensive, detailed prompts by identifying what important information is missing. Focus on practical gaps that would significantly improve their request quality.' },
+                { role: 'system', content: 'You are a helpful friend having a natural conversation. Your job is to ask the most logical, natural follow-up questions that continue the conversation in a flowing way. Be direct and focused - no pleasantries, excitement, or filler words. Just ask the essential questions that would naturally come next.' },
                 { role: 'user', content: prompt }
             ],
             max_tokens: 120,
