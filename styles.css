@@ -28,6 +28,7 @@ header {
     border-radius: 15px;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(10px);
+    position: relative;
 }
 
 header h1 {
@@ -43,6 +44,10 @@ header p {
 
 .version-nav {
     margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
 }
 
 .mobile-link {
@@ -55,11 +60,112 @@ header p {
     font-weight: 500;
     transition: all 0.3s ease;
     box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    text-align: center;
+}
+
+.version-subtitle {
+    display: block;
+    font-size: 0.8rem;
+    opacity: 0.9;
+    margin-top: 2px;
+}
+
+.version-comparison {
+    font-size: 0.8rem;
+    color: #666;
+    text-align: center;
+}
+
+.current-version {
+    background: rgba(102, 126, 234, 0.1);
+    padding: 4px 8px;
+    border-radius: 12px;
+    border: 1px solid rgba(102, 126, 234, 0.2);
 }
 
 .mobile-link:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+/* Version Comparison Help Section */
+.version-help {
+    margin-bottom: 20px;
+}
+
+.help-toggle {
+    background: rgba(255, 255, 255, 0.9);
+    border: 2px solid rgba(102, 126, 234, 0.3);
+    border-radius: 25px;
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    color: #4a5568;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+.help-toggle:hover {
+    background: rgba(255, 255, 255, 0.95);
+    border-color: rgba(102, 126, 234, 0.6);
+    color: #2d3748;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+}
+
+.help-content {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.help-content.hidden {
+    display: none;
+}
+
+.comparison-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.version-card {
+    background: rgba(248, 250, 252, 0.8);
+    border: 2px solid rgba(226, 232, 240, 0.8);
+    border-radius: 12px;
+    padding: 15px;
+}
+
+.version-card.current {
+    background: rgba(102, 126, 234, 0.1);
+    border-color: rgba(102, 126, 234, 0.3);
+}
+
+.version-card h3 {
+    color: #4a5568;
+    margin-bottom: 10px;
+    font-size: 1rem;
+}
+
+.version-card ul {
+    list-style: none;
+    padding: 0;
+}
+
+.version-card li {
+    padding: 4px 0;
+    font-size: 0.85rem;
+    color: #4a5568;
+    font-weight: 500;
+}
+
+@media (max-width: 768px) {
+    .comparison-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 main {

@@ -1,0 +1,29 @@
+[
+  {
+    "test": "Bundle Size",
+    "totalSize": "143KB",
+    "files": {
+      "script.js": 41,
+      "mobile.js": 30,
+      "styles.css": 20,
+      "mobile.css": 15,
+      "utils/error-handler.js": 12,
+      "utils/config.js": 11,
+      "utils/performance.js": 14
+    },
+    "status": "PASS",
+    "recommendation": "Good bundle size"
+  },
+  {
+    "test": "Estimated Load Time",
+    "loadTime": "1653ms",
+    "status": "PASS",
+    "recommendation": "Good load performance"
+  },
+  {
+    "test": "Memory Usage",
+    "heapUsed": "4MB",
+    "status": "PASS",
+    "recommendation": "Good memory usage"
+  }
+]

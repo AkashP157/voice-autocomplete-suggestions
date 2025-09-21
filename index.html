@@ -9,7 +9,16 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
     
-    <title>🎤 Voice Based Suggestions</title>
+    <title>🎤 Voice Based Suggestions V1 - Desktop Analytics</title>
+    <meta name="description" content="Desktop V1: Voice-powered suggestions with comprehensive analytics, developer tools, and performance monitoring. Enterprise-focused interface.">
+    <meta name="keywords" content="voice recognition, speech to text, AI suggestions, desktop analytics, developer tools, enterprise">
+    <meta name="version" content="1.0 - Desktop">
+    
+    <!-- Open Graph / Social Media Meta Tags -->
+    <meta property="og:title" content="Voice Based Suggestions V1 - Desktop Analytics">
+    <meta property="og:description" content="Desktop V1: Voice-powered suggestions with comprehensive analytics and developer tools">
+    <meta property="og:type" content="website">
+    
     <link rel="stylesheet" href="styles.css?v=20250920-2">
 </head>
 <body>
@@ -19,10 +28,44 @@
         <p>Click the microphone button and start speaking in English</p>
         <div class="version-nav">
             <a href="mobile.html" class="mobile-link">
-                📱 Try Mobile Version (v2)
+                📱 Switch to Mobile V2
+                <span class="version-subtitle">Enhanced UX • Touch-Optimized</span>
             </a>
+            <div class="version-comparison">
+                <span class="current-version">Currently using: Desktop V1 (Analytics Focus)</span>
+            </div>
         </div>
-    </header>        <main>
+    </header>
+    
+    <!-- Version Comparison Help -->
+    <div class="version-help">
+        <button id="helpToggle" class="help-toggle">ℹ️ V1 vs V2 Comparison</button>
+        <div id="helpContent" class="help-content hidden">
+            <div class="comparison-grid">
+                <div class="version-card current">
+                    <h3>🖥️ Desktop V1 (Current)</h3>
+                    <ul>
+                        <li>📊 Advanced Analytics Dashboard</li>
+                        <li>🔧 Developer Tools & Debugging</li>
+                        <li>📈 Performance Monitoring</li>
+                        <li>⚙️ Comprehensive Configuration</li>
+                        <li>🎯 Enterprise-Focused</li>
+                    </ul>
+                </div>
+                <div class="version-card">
+                    <h3>📱 Mobile V2</h3>
+                    <ul>
+                        <li>🎨 Beautiful Animations & Polish</li>
+                        <li>🤖 Natural Conversation Flow</li>
+                        <li>👆 Touch-Optimized Interface</li>
+                        <li>🎭 Smart Keyword Highlighting</li>
+                        <li>👤 User-Focused Design</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+        <main>
             <div class="controls">
                 <button id="startBtn" class="control-btn start-btn">
                     <span class="mic-icon">🎤</span>

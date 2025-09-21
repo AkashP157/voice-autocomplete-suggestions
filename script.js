@@ -1002,6 +1002,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const transcriber = new SpeechTranscriber();
     window.speechTranscriber = transcriber;
     
+    // Help toggle functionality
+    const helpToggle = document.getElementById('helpToggle');
+    const helpContent = document.getElementById('helpContent');
+    
+    if (helpToggle && helpContent) {
+        helpToggle.addEventListener('click', () => {
+            helpContent.classList.toggle('hidden');
+            helpToggle.textContent = helpContent.classList.contains('hidden') 
+                ? 'ℹ️ V1 vs V2 Comparison' 
+                : '✕ Close Comparison';
+        });
+    }
+    
     // Add keyboard shortcuts for suggestions
     document.addEventListener('keydown', (e) => {
         if (e.key >= '1' && e.key <= '3') {

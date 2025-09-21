@@ -1,0 +1,26 @@
+[
+  {
+    "type": "MISSING_CSP",
+    "file": "index.html",
+    "severity": "MEDIUM",
+    "message": "Content Security Policy header not found"
+  },
+  {
+    "type": "MISSING_CSP",
+    "file": "mobile.html",
+    "severity": "MEDIUM",
+    "message": "Content Security Policy header not found"
+  },
+  {
+    "type": "XSS_RISK",
+    "file": "script.js",
+    "severity": "HIGH",
+    "message": "innerHTML usage without proper sanitization detected"
+  },
+  {
+    "type": "XSS_RISK",
+    "file": "mobile.js",
+    "severity": "HIGH",
+    "message": "innerHTML usage without proper sanitization detected"
+  }
+]
