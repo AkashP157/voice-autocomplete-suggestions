@@ -16,9 +16,9 @@
   },
   {
     "test": "Estimated Load Time",
-    "loadTime": "1653ms",
-    "status": "PASS",
-    "recommendation": "Good load performance"
+    "loadTime": "2401ms",
+    "status": "WARN",
+    "recommendation": "Optimize resource loading"
   },
   {
     "test": "Memory Usage",
