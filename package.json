@@ -15,7 +15,11 @@
         "serve": "python -m http.server 8000",
         "docs": "jsdoc -d docs *.js utils/*.js",
         "performance": "node utils/performance-test.js",
-        "security": "npm audit && node utils/security-check.js"
+        "security": "npm audit && node utils/security-check.js",
+        "status": "node -e \"console.log('📊 Quick Status Check:'); console.log('Run quick-status.bat (Windows) or bash quick-status.sh (Mac/Linux)')\"",
+        "health": "npm run performance && npm run security",
+        "dashboard": "echo 📖 Opening project dashboard... && start PROJECT-DASHBOARD.md",
+        "log": "echo 📝 Opening development log... && start DEVELOPMENT-LOG.md"
     },
     "keywords": [
         "voice",
