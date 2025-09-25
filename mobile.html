@@ -76,27 +76,57 @@
                 <button id="closeMobileConfigBtn" class="mobile-close-btn">×</button>
             </div>
             <div class="mobile-config-fields">
-                <div class="mobile-config-field">
-                    <label for="mobileEndpoint">API Endpoint:</label>
-                    <input type="url" id="mobileEndpoint" placeholder="https://your-service.openai.azure.com/" />
+                <!-- LLM Configuration Section -->
+                <div class="mobile-config-section">
+                    <h4>🤖 LLM Configuration</h4>
+                    <div class="mobile-config-field">
+                        <label for="mobileEndpoint">API Endpoint:</label>
+                        <input type="url" id="mobileEndpoint" placeholder="https://your-service.openai.azure.com/" />
+                    </div>
+                    <div class="mobile-config-field">
+                        <label for="mobileApiKey">API Key:</label>
+                        <input type="password" id="mobileApiKey" placeholder="Your API key" />
+                    </div>
+                    <div class="mobile-config-field">
+                        <label for="mobileModel">Model Name:</label>
+                        <input type="text" id="mobileModel" placeholder="gpt-4o-mini" />
+                    </div>
+                    <div class="mobile-config-field">
+                        <label for="mobileDeployment">Deployment Name:</label>
+                        <input type="text" id="mobileDeployment" placeholder="your-deployment-name" />
+                    </div>
+                    <div class="mobile-config-actions">
+                        <button id="mobileTestBtn" class="mobile-btn-test">🔌 Test Connection</button>
+                        <button id="mobileSaveBtn" class="mobile-btn-save">💾 Save Configuration</button>
+                    </div>
+                    <div id="mobileConnectionStatus" class="mobile-connection-status"></div>
                 </div>
-                <div class="mobile-config-field">
-                    <label for="mobileApiKey">API Key:</label>
-                    <input type="password" id="mobileApiKey" placeholder="Your API key" />
+
+                <!-- Suggestion Style Configuration Section -->
+                <div class="mobile-config-section">
+                    <h4>💬 Suggestion Style</h4>
+                    <div class="suggestion-style-options">
+                        <div class="style-option">
+                            <input type="radio" id="defaultStyle" name="suggestionStyle" value="default" checked>
+                            <label for="defaultStyle" class="style-label">
+                                <span class="style-title">Default</span>
+                                <span class="style-description">Natural conversation flow</span>
+                                <span class="style-example">Example: "Where to?", "When?", "Budget range?"</span>
+                            </label>
+                        </div>
+                        <div class="style-option">
+                            <input type="radio" id="keywordStyle" name="suggestionStyle" value="keywords">
+                            <label for="keywordStyle" class="style-label">
+                                <span class="style-title">Keywords</span>
+                                <span class="style-description">Short, focused questions</span>
+                                <span class="style-example">Example: "Where?", "When?", "Budget?"</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="style-note">
+                        <small>💡 Changes take effect in your next conversation</small>
+                    </div>
                 </div>
-                <div class="mobile-config-field">
-                    <label for="mobileModel">Model Name:</label>
-                    <input type="text" id="mobileModel" placeholder="gpt-4o-mini" />
-                </div>
-                <div class="mobile-config-field">
-                    <label for="mobileDeployment">Deployment Name:</label>
-                    <input type="text" id="mobileDeployment" placeholder="your-deployment-name" />
-                </div>
-                <div class="mobile-config-actions">
-                    <button id="mobileTestBtn" class="mobile-btn-test">🔌 Test Connection</button>
-                    <button id="mobileSaveBtn" class="mobile-btn-save">💾 Save Configuration</button>
-                </div>
-                <div id="mobileConnectionStatus" class="mobile-connection-status"></div>
             </div>
         </div>
     </div>

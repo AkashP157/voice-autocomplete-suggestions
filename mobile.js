@@ -45,6 +45,11 @@ class MobileSpeechTranscriber {
             isConnected: false
         };
         
+        // Feature flag system
+        this.featureFlags = {
+            suggestionStyle: 'default' // 'default' or 'keywords'
+        };
+        
         // Mobile DOM elements
         this.recordBtn = document.getElementById('recordBtn');
         this.recordIcon = document.getElementById('recordIcon');
@@ -70,6 +75,7 @@ class MobileSpeechTranscriber {
         this.setupEventListeners();
         this.setupSpeechRecognition();
         this.loadLLMConfig();
+        this.loadFeatureFlags();
         console.log('🎤 Mobile Voice Suggestions v2.0 initialized');
     }
     
@@ -99,6 +105,11 @@ class MobileSpeechTranscriber {
         this.closeMobileConfigBtn.addEventListener('click', () => this.closeMobileConfigPanel());
         this.mobileTestBtn.addEventListener('click', () => this.testMobileLLMConnection());
         this.mobileSaveBtn.addEventListener('click', () => this.saveMobileLLMConfiguration());
+        
+        // Feature flag listeners
+        document.querySelectorAll('input[name="suggestionStyle"]').forEach(radio => {
+            radio.addEventListener('change', () => this.saveFeatureFlags());
+        });
         
         // Keyboard shortcuts (mobile-friendly)
         document.addEventListener('keydown', (e) => {
@@ -590,21 +601,15 @@ class MobileSpeechTranscriber {
             return null;
         }
         
-        const prompt = `You are having a natural, helpful conversation with someone. They just told you: "${text}"
-
-Think like a helpful friend - what would you naturally ask next to continue this conversation in a flowing, logical way? 
-
-Consider:
-- What's the most immediate next thing you'd want to know?
-- What would make this feel like talking to a real person?
-- What single detail would be most helpful to understand next?
-
-Provide 3 natural, conversational follow-up questions (4-5 words each) that flow logically from what they just said. Be direct and focused - no pleasantries or filler words, just the essential questions.`;
+        // Get the appropriate prompt template based on feature flags
+        const promptTemplate = this.getPromptTemplate(text);
+        const currentStyle = this.featureFlags.suggestionStyle || 'default';
+        console.log(`🎯 Using suggestion style: ${currentStyle}`);
         
         const requestBody = {
             messages: [
-                { role: 'system', content: 'You are a helpful friend having a natural conversation. Your job is to ask the most logical, natural follow-up questions that continue the conversation in a flowing way. Be direct and focused - no pleasantries, excitement, or filler words. Just ask the essential questions that would naturally come next.' },
-                { role: 'user', content: prompt }
+                { role: 'system', content: promptTemplate.systemMessage },
+                { role: 'user', content: promptTemplate.userPrompt }
             ],
             max_tokens: 120,
             temperature: 0.7
@@ -758,6 +763,83 @@ Provide 3 natural, conversational follow-up questions (4-5 words each) that flow
         window.location.href = 'index.html';
     }
     
+    // Feature Flag Management
+    loadFeatureFlags() {
+        try {
+            const saved = localStorage.getItem('mobileFeatureFlags');
+            if (saved) {
+                const flags = JSON.parse(saved);
+                this.featureFlags = { ...this.featureFlags, ...flags };
+                
+                // Update UI to reflect loaded flags
+                const selectedStyle = this.featureFlags.suggestionStyle || 'default';
+                const radio = document.getElementById(`${selectedStyle}Style`);
+                if (radio) {
+                    radio.checked = true;
+                }
+                
+                console.log('🏁 Feature flags loaded:', this.featureFlags);
+            }
+        } catch (error) {
+            console.error('Error loading feature flags:', error);
+            // Reset to defaults on error
+            this.featureFlags = { suggestionStyle: 'default' };
+        }
+    }
+    
+    saveFeatureFlags() {
+        try {
+            // Get selected suggestion style
+            const selectedStyleRadio = document.querySelector('input[name="suggestionStyle"]:checked');
+            if (selectedStyleRadio) {
+                this.featureFlags.suggestionStyle = selectedStyleRadio.value;
+            }
+            
+            // Save to localStorage
+            localStorage.setItem('mobileFeatureFlags', JSON.stringify(this.featureFlags));
+            console.log('🏁 Feature flags saved:', this.featureFlags);
+            
+        } catch (error) {
+            console.error('Error saving feature flags:', error);
+        }
+    }
+    
+    // Get appropriate prompt template based on current feature flags
+    getPromptTemplate(text) {
+        const style = this.featureFlags.suggestionStyle || 'default';
+        
+        if (style === 'keywords') {
+            return {
+                systemMessage: 'You are a helpful assistant that provides short, keyword-style follow-up questions. Be concise and direct - each suggestion should be 1-2 words maximum, asking the most essential next question.',
+                userPrompt: `Someone just said: "${text}"
+
+Provide 3 short, keyword-style follow-up questions (1-2 words each) that ask for the most essential missing information. Think like essential form fields.
+
+Examples:
+- If they mention travel: "Where?" "When?" "Duration?"
+- If they mention food: "Cuisine?" "Budget?" "Location?"
+- If they mention work: "Role?" "Company?" "Timeline?"
+
+Be direct and focused - no explanations, just the essential questions as short keywords.`
+            };
+        }
+        
+        // Default style (current behavior)
+        return {
+            systemMessage: 'You are a helpful friend having a natural conversation. Your job is to ask the most logical, natural follow-up questions that continue the conversation in a flowing way. Be direct and focused - no pleasantries, excitement, or filler words. Just ask the essential questions that would naturally come next.',
+            userPrompt: `You are having a natural, helpful conversation with someone. They just told you: "${text}"
+
+Think like a helpful friend - what would you naturally ask next to continue this conversation in a flowing, logical way? 
+
+Consider:
+- What's the most immediate next thing you'd want to know?
+- What would make this feel like talking to a real person?
+- What single detail would be most helpful to understand next?
+
+Provide 3 natural, conversational follow-up questions (4-5 words each) that flow logically from what they just said. Be direct and focused - no pleasantries or filler words, just the essential questions.`
+        };
+    }
+
     showError(message) {
         console.error('❌', message);
         // Could add a toast notification here

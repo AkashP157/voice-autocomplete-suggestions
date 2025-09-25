@@ -605,6 +605,116 @@ body {
     border: 1px solid #f5c6cb;
 }
 
+/* Feature Flag Styles */
+.mobile-config-section {
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.mobile-config-section:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.mobile-config-section h4 {
+    color: #000000;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0 0 15px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.suggestion-style-options {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.style-option {
+    position: relative;
+}
+
+.style-option input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.style-label {
+    display: block;
+    padding: 15px 18px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.1);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.style-label:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.style-option input[type="radio"]:checked + .style-label {
+    background: rgba(102, 126, 234, 0.2);
+    border-color: #667eea;
+    box-shadow: 0 0 0 1px #667eea;
+}
+
+.style-option input[type="radio"]:checked + .style-label::after {
+    content: '✓';
+    position: absolute;
+    top: 15px;
+    right: 18px;
+    color: #667eea;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.style-title {
+    display: block;
+    color: #000000;
+    font-weight: 600;
+    font-size: 1rem;
+    margin-bottom: 5px;
+}
+
+.style-description {
+    display: block;
+    color: #333333;
+    font-size: 0.85rem;
+    margin-bottom: 8px;
+    font-weight: 400;
+}
+
+.style-example {
+    display: block;
+    color: #555555;
+    font-size: 0.8rem;
+    font-style: italic;
+    line-height: 1.4;
+}
+
+.style-note {
+    text-align: center;
+    padding: 12px 15px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    margin-top: 5px;
+}
+
+.style-note small {
+    color: #444444;
+    font-size: 0.8rem;
+    font-weight: 400;
+}
+
 /* Responsive adjustments */
 @media (max-width: 500px) {
     .mobile-container {
